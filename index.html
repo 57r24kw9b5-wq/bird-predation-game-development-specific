@@ -45,23 +45,25 @@
       </header>
 
       <!-- Opening / Title Screen Overlay -->
-      <section id="title-screen" class="overlay-layer">
-        <div class="video-wrapper">
-          <video id="title-video" src="assets/title.mp4" autoplay muted playsinline webkit-playsinline preload="auto"></video>
-          <!-- Safe Skip button in case user wants to jump directly -->
-          <button id="skip-btn" class="skip-btn" title="Skip Video">SKIP ⏭</button>
-        </div>
-        
-        <div id="title-ui" class="title-ui">
-          <div class="title-logo-box">
-            <span class="title-sub">CROSS-PLATFORM ACTION</span>
-            <h1 class="title-main">BIRD PREDATION</h1>
-            <p class="title-hint">HUNT 20 INSECTS • AVOID BOUNDARIES</p>
+      <section id="title-screen" class="title-screen-white">
+        <div id="title-stage">
+          <!-- Responsive background image fitting inside available area with plain white margins -->
+          <img id="title-bg-img" src="assets/title_bg.jpg" alt="Title Background" draggable="false">
+          
+          <div id="title-content-layer">
+            <!-- Animated Bird in the center white space -->
+            <div id="title-bird-wrapper">
+              <canvas id="title-bird-canvas"></canvas>
+            </div>
+
+            <!-- START button directly below the bird -->
+            <div id="title-btn-wrapper">
+              <button id="start-btn" class="btn btn-start">
+                <span class="btn-shine"></span>
+                <span class="btn-text">START</span>
+              </button>
+            </div>
           </div>
-          <button id="start-btn" class="btn btn-start hidden">
-            <span class="btn-shine"></span>
-            <span class="btn-text">START HUNT</span>
-          </button>
         </div>
       </section>
 
