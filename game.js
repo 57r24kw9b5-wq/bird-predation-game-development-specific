@@ -70,6 +70,11 @@ const CONFIG = {
   assets: {
     video: 'assets/title.mp4',
     bird: 'assets/bird.png',
+    birdFrames: [
+      'assets/bird_fly_1.png',
+      'assets/bird_fly_2.png',
+      'assets/bird_fly_3.png'
+    ],
     insect: 'assets/insect.png',
     background: 'assets/background.png',
     cloud: 'assets/cloud.png'
@@ -257,6 +262,9 @@ class AssetManager {
 
   async loadAll() {
     const promises = [
+      this.loadImage('bird_fly_1', CONFIG.assets.birdFrames[0]),
+      this.loadImage('bird_fly_2', CONFIG.assets.birdFrames[1]),
+      this.loadImage('bird_fly_3', CONFIG.assets.birdFrames[2]),
       this.loadImage('bird', CONFIG.assets.bird),
       this.loadImage('insect', CONFIG.assets.insect),
       this.loadImage('background', CONFIG.assets.background),
@@ -267,6 +275,18 @@ class AssetManager {
 
   isAvailable(name) {
     return this.status[name] === true && this.images[name] !== null;
+  }
+
+  hasBirdFrames() {
+    return this.isAvailable('bird_fly_1') &&
+           this.isAvailable('bird_fly_2') &&
+           this.isAvailable('bird_fly_3');
+  }
+
+  getBirdFrame(index) {
+    const frameNames = ['bird_fly_1', 'bird_fly_2', 'bird_fly_3'];
+    const name = frameNames[index] || 'bird_fly_2';
+    return this.images[name] || this.images['bird'];
   }
 
   getImage(name) {
@@ -440,7 +460,9 @@ class BirdPredationGame {
       height: CONFIG.bird.height,
       vy: 0,
       rotation: 0,
-      wingTimer: 0
+      wingTimer: 0,
+      animTimer: 0,
+      frameIndex: 1
     };
 
     // Insects Entity Pool
@@ -719,6 +741,8 @@ class BirdPredationGame {
     this.bird.vy = 0;
     this.bird.rotation = 0;
     this.bird.wingTimer = 0;
+    this.bird.animTimer = 0;
+    this.bird.frameIndex = 1;
 
     // 3. Reset Insects and spawn timer
     this.insects = [];
