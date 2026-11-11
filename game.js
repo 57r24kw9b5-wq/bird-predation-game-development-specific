@@ -41,12 +41,13 @@ const CONFIG = {
     glideFps: 9               // Animation rate during descent/glide (~9 fps, within 8-12 fps)
   },
 
-  // Insect Varieties (4 types with equal spawn probability)
+  // Insect Varieties (5 types with equal spawn probability)
   insectVarieties: [
     { id: 1, name: 'Bee', assetKey: 'insect_1', width: 78, height: 60, hitboxRadius: 24 },
     { id: 2, name: 'Dragonfly', assetKey: 'insect_2', width: 58, height: 80, hitboxRadius: 25 },
     { id: 3, name: 'RedBeetle', assetKey: 'insect_3', width: 66, height: 64, hitboxRadius: 24 },
-    { id: 4, name: 'DarkBeetle', assetKey: 'insect_4', width: 66, height: 64, hitboxRadius: 24 }
+    { id: 4, name: 'DarkBeetle', assetKey: 'insect_4', width: 66, height: 64, hitboxRadius: 24 },
+    { id: 5, name: 'SpottedBeetle', assetKey: 'insect_5', width: 66, height: 64, hitboxRadius: 24 }
   ],
 
   // Insect Settings
@@ -87,7 +88,8 @@ const CONFIG = {
       'assets/insect_1.png',
       'assets/insect_2.png',
       'assets/insect_3.png',
-      'assets/insect_4.png'
+      'assets/insect_4.png',
+      'assets/insect_5.png'
     ],
     background: 'assets/background.png',
     cloud: 'assets/cloud.png'
