@@ -285,6 +285,7 @@ class AssetManager {
       this.loadImage('insect_2', CONFIG.assets.insects[1]),
       this.loadImage('insect_3', CONFIG.assets.insects[2]),
       this.loadImage('insect_4', CONFIG.assets.insects[3]),
+      this.loadImage('insect_5', CONFIG.assets.insects[4]),
       this.loadImage('background', CONFIG.assets.background),
       this.loadImage('cloud', CONFIG.assets.cloud)
     ];
@@ -1127,7 +1128,7 @@ class BirdPredationGame {
         );
       } else {
         // Procedural bug fallback with variety colors
-        const varietyColors = ['#f59e0b', '#10b981', '#ef4444', '#64748b'];
+        const varietyColors = ['#f59e0b', '#10b981', '#ef4444', '#64748b', '#8b5cf6'];
         const mainColor = varietyColors[ins.varietyIndex] || '#00cc66';
 
         // Wings
