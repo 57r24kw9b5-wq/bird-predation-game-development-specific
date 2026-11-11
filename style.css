@@ -352,8 +352,10 @@ body::before {
   /* Fill button width; height will overflow (clipped by button overflow:hidden) */
   width: 100%;
   height: auto;
-  /* Shift up so the text band (~34% from top) is centered in the button */
-  margin-top: -27%;
+  /* Shift up so the text band (~34% from top of 1036x1600 image) centers in button.
+     Rendered height ≈ 290×(1600/1036)=448px; text center ≈ 152px from top;
+     button ≈ 54px; offset = 152 - 27 = 125px ≈ 43% of button width (290px). */
+  margin-top: -43%;
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
