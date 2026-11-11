@@ -329,9 +329,10 @@ body::before {
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 6px 12px;
+  padding: 0;
+  overflow: hidden;
   cursor: pointer;
   animation: pulse-glow 2s infinite ease-in-out;
 }
@@ -348,14 +349,15 @@ body::before {
 /* Start button image */
 .start-btn-img {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
+  /* Fill button width; height will overflow (clipped by button overflow:hidden) */
+  width: 100%;
   height: auto;
-  object-fit: contain;
+  /* Shift up so the text band (~34% from top) is centered in the button */
+  margin-top: -27%;
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+  flex-shrink: 0;
 }
 
 /* Start Button */
