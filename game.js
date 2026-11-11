@@ -601,24 +601,29 @@ class BirdPredationGame {
     }, { passive: false });
 
     // 3. UI Buttons
+    const stopPropagationAll = (el) => {
+      if (!el) return;
+      ['pointerdown', 'mousedown', 'touchstart', 'click'].forEach(evt => {
+        el.addEventListener(evt, (e) => e.stopPropagation());
+      });
+    };
+
+    [this.startBtn, this.skipBtn, this.retryBtnOver, this.retryBtnClear, this.soundBtn].forEach(stopPropagationAll);
+
     this.startBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
       this.startGame();
     });
 
     this.retryBtnOver.addEventListener('click', (e) => {
-      e.stopPropagation();
       this.restartGame();
     });
 
     this.retryBtnClear.addEventListener('click', (e) => {
-      e.stopPropagation();
       this.restartGame();
     });
 
     // Sound toggle button
     this.soundBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
       this.sounds.init();
       const isMuted = this.sounds.toggleMute();
       this.soundIcon.textContent = isMuted ? '🔇' : '🔊';
