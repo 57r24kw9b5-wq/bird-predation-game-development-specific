@@ -1050,7 +1050,21 @@ class BirdPredationGame {
 
   // Background Rendering (Image or Procedural Fallback)
   drawBackground(ctx, w, h) {
-    if (this.assets.isAvailable('background')) {
+    if (this.assets.isAvailable('gameplay_bg')) {
+      // Draw new gameplay background with object-fit: contain (white margins)
+      const img = this.assets.getImage('gameplay_bg');
+      const imgW = img.naturalWidth || img.width;
+      const imgH = img.naturalHeight || img.height;
+      const scale = Math.min(w / imgW, h / imgH);
+      const drawW = imgW * scale;
+      const drawH = imgH * scale;
+      const drawX = (w - drawW) / 2;
+      const drawY = (h - drawH) / 2;
+      // Fill canvas with white first (margins)
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img, drawX, drawY, drawW, drawH);
+    } else if (this.assets.isAvailable('background')) {
       ctx.drawImage(this.assets.getImage('background'), 0, 0, w, h);
     } else {
       // Procedural Fallback Sky & Scenery
