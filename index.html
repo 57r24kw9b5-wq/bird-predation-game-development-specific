@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0a192f">
+  <title>Bird Predation Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Desktop Left Decoration Panel (visible on wide screens) -->
+    <aside class="desktop-panel desktop-panel-left" aria-hidden="true">
+      <div class="panel-content">
+        <div class="panel-badge">ARCADE EDITION</div>
+        <h1 class="panel-title">BIRD<br>PREDATION</h1>
+        <p class="panel-desc">A cross-platform 2D side-scrolling aerial predation survival challenge.</p>
+        <div class="panel-card">
+          <div class="card-icon">🎯</div>
+          <div class="card-text">
+            <strong>MISSION</strong>
+            <span>Hunt 20 insects to clear the stage!</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Game Container (Constrained 9:16 Aspect Ratio) -->
+    <main id="game-container">
+      <!-- Game Canvas for 2D Rendering -->
+      <canvas id="game-canvas"></canvas>
+
+      <!-- HUD (Heads-Up Display) -->
+      <header id="hud" class="hud-layer hidden">
+        <div class="hud-score-container">
+          <span class="hud-icon">🦗</span>
+          <span id="score-text">INSECTS : 00 / 20</span>
+        </div>
+        <button id="sound-btn" class="hud-sound-btn" title="Toggle Sound" aria-label="Toggle Sound">
+          <span id="sound-icon">🔊</span>
+        </button>
+      </header>
+
+      <!-- Opening / Title Screen Overlay -->
+      <section id="title-screen" class="overlay-layer">
+        <div class="video-wrapper">
+          <video id="title-video" src="assets/title.mp4" autoplay muted playsinline webkit-playsinline preload="auto"></video>
+          <!-- Safe Skip button in case user wants to jump directly -->
+          <button id="skip-btn" class="skip-btn" title="Skip Video">SKIP ⏭</button>
+        </div>
+        
+        <div id="title-ui" class="title-ui">
+          <div class="title-logo-box">
+            <span class="title-sub">CROSS-PLATFORM ACTION</span>
+            <h1 class="title-main">BIRD PREDATION</h1>
+            <p class="title-hint">HUNT 20 INSECTS • AVOID BOUNDARIES</p>
+          </div>
+          <button id="start-btn" class="btn btn-start hidden">
+            <span class="btn-shine"></span>
+            <span class="btn-text">START HUNT</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Interactive Controls Prompt (briefly shown when starting) -->
+      <div id="controls-hint" class="controls-hint hidden">
+        <span class="hint-pulse"></span>
+        <span id="hint-text">HOLD TO ASCEND • RELEASE TO DIVE</span>
+      </div>
+
+      <!-- Game Over Overlay -->
+      <section id="game-over-screen" class="overlay-layer modal-overlay hidden" aria-modal="true" role="dialog">
+        <div class="modal-card modal-game-over">
+          <div class="modal-banner banner-game-over">
+            <span class="banner-icon">💥</span>
+            <h2>GAME OVER</h2>
+          </div>
+          <p class="modal-reason" id="game-over-reason">The bird flew out of bounds!</p>
+          <div class="modal-score-box">
+            <span class="score-label">FINAL PREDATION</span>
+            <span class="score-value" id="game-over-score">INSECTS : 00 / 20</span>
+          </div>
+          <button id="retry-btn-over" class="btn btn-retry">
+            <span class="btn-shine"></span>
+            <span class="btn-text">RETRY</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Game Clear Overlay -->
+      <section id="game-clear-screen" class="overlay-layer modal-overlay hidden" aria-modal="true" role="dialog">
+        <div class="modal-card modal-game-clear">
+          <div class="celebration-particles" aria-hidden="true"></div>
+          <div class="modal-banner banner-game-clear">
+            <span class="banner-icon">👑</span>
+            <h2>GAME CLEAR!</h2>
+          </div>
+          <p class="modal-subtitle">Superb hunting! You devoured 20 insects!</p>
+          <div class="modal-score-box score-box-clear">
+            <span class="score-label">TARGET ACHIEVED</span>
+            <span class="score-value">INSECTS : 20 / 20</span>
+          </div>
+          <button id="retry-btn-clear" class="btn btn-retry btn-clear-retry">
+            <span class="btn-shine"></span>
+            <span class="btn-text">PLAY AGAIN</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Desktop Right Decoration Panel (visible on wide screens) -->
+    <aside class="desktop-panel desktop-panel-right" aria-hidden="true">
+      <div class="panel-content">
+        <div class="panel-card">
+          <div class="card-icon">🎮</div>
+          <div class="card-text">
+            <strong>DESKTOP CONTROLS</strong>
+            <span>Hold <b>Space</b> or <b>Left Mouse</b> to ascend</span>
+            <span class="card-sub">Release key/mouse to descend</span>
+          </div>
+        </div>
+        <div class="panel-card">
+          <div class="card-icon">📱</div>
+          <div class="card-text">
+            <strong>MOBILE CONTROLS</strong>
+            <span><b>Touch & Hold</b> anywhere on screen to ascend</span>
+            <span class="card-sub">Release finger to descend</span>
+          </div>
+        </div>
+        <div class="panel-card">
+          <div class="card-icon">⚠️</div>
+          <div class="card-text">
+            <strong>BOUNDARIES</strong>
+            <span>Touching top or bottom boundary triggers Game Over!</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
