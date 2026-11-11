@@ -833,12 +833,19 @@ class BirdPredationGame {
 
     const speed = conf.minSpeed + Math.random() * (conf.maxSpeed - conf.minSpeed);
 
+    // Randomly select one of the 4 varieties with equal probability (25% each)
+    const varietyIndex = Math.floor(Math.random() * CONFIG.insectVarieties.length);
+    const variety = CONFIG.insectVarieties[varietyIndex];
+
     this.insects.push({
       x: spawnX,
       y: bestY,
       baseY: bestY,
-      width: conf.width,
-      height: conf.height,
+      varietyIndex: varietyIndex,
+      assetKey: variety.assetKey,
+      width: variety.width,
+      height: variety.height,
+      hitboxRadius: variety.hitboxRadius,
       speed: speed,
       phase: Math.random() * Math.PI * 2,
       wingTimer: 0
@@ -920,11 +927,13 @@ class BirdPredationGame {
     const birdHitX = this.bird.x + CONFIG.bird.hitboxOffsetX;
     const birdHitY = this.bird.y + CONFIG.bird.hitboxOffsetY;
     const birdRadius = CONFIG.bird.hitboxRadius;
-    const insectRadius = CONFIG.insects.hitboxRadius;
-    const hitDistSq = (birdRadius + insectRadius) * (birdRadius + insectRadius);
 
     for (let i = this.insects.length - 1; i >= 0; i--) {
       const ins = this.insects[i];
+      const insectRadius = ins.hitboxRadius || CONFIG.insects.hitboxRadius;
+      const hitDist = birdRadius + insectRadius;
+      const hitDistSq = hitDist * hitDist;
+
       const dx = birdHitX - ins.x;
       const dy = birdHitY - ins.y;
       const distSq = dx * dx + dy * dy;
@@ -1091,11 +1100,8 @@ class BirdPredationGame {
     }
   }
 
-  // Insect Rendering (Image or Procedural Fallback)
+  // Insect Rendering (4 Distinct Varieties with Procedural Fallbacks)
   drawInsects(ctx) {
-    const hasInsectImg = this.assets.isAvailable('insect');
-    const insectImg = this.assets.getImage('insect');
-
     for (const ins of this.insects) {
       ctx.save();
       ctx.translate(ins.x, ins.y);
@@ -1104,7 +1110,12 @@ class BirdPredationGame {
       const flapTilt = Math.sin(ins.wingTimer) * 0.12;
       ctx.rotate(flapTilt);
 
-      if (hasInsectImg) {
+      // Retrieve variety-specific sprite
+      const insectImg = this.assets.getImage(ins.assetKey) ||
+                        this.assets.getImage('insect_1') ||
+                        this.assets.getImage('insect');
+
+      if (insectImg) {
         ctx.drawImage(
           insectImg,
           -ins.width / 2,
@@ -1113,23 +1124,26 @@ class BirdPredationGame {
           ins.height
         );
       } else {
-        // Procedural Dragonfly/Bug Fallback
+        // Procedural bug fallback with variety colors
+        const varietyColors = ['#f59e0b', '#10b981', '#ef4444', '#64748b'];
+        const mainColor = varietyColors[ins.varietyIndex] || '#00cc66';
+
         // Wings
         ctx.fillStyle = 'rgba(120, 255, 230, 0.7)';
         ctx.beginPath();
-        ctx.ellipse(0, -18 + Math.sin(ins.wingTimer) * 5, 26, 8, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, -ins.height * 0.28 + Math.sin(ins.wingTimer) * 5, ins.width * 0.35, ins.height * 0.14, 0, 0, Math.PI * 2);
         ctx.fill();
 
         // Body
-        ctx.fillStyle = '#00cc66';
+        ctx.fillStyle = mainColor;
         ctx.beginPath();
-        ctx.ellipse(0, 0, 16, 7, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, ins.width * 0.28, ins.height * 0.2, 0, 0, Math.PI * 2);
         ctx.fill();
 
         // Eye
         ctx.fillStyle = '#ff2b66';
         ctx.beginPath();
-        ctx.arc(-14, -2, 4, 0, Math.PI * 2);
+        ctx.arc(-ins.width * 0.2, -ins.height * 0.05, 3.5, 0, Math.PI * 2);
         ctx.fill();
       }
 
