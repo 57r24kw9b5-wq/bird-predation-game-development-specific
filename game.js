@@ -25,8 +25,8 @@ const CONFIG = {
   bird: {
     startX: 180,              // Fixed horizontal position (near left-center)
     startY: 640,              // Initial vertical center
-    width: 110,               // Display width in virtual pixels
-    height: 80,               // Display height in virtual pixels
+    width: 135,               // Display width in virtual pixels (preserves 1600:1132 aspect ratio)
+    height: 95,               // Display height in virtual pixels
     flapAcceleration: 2400,   // Upward acceleration while ascending (px/s^2)
     gravity: 1500,            // Downward acceleration under gravity (px/s^2)
     maxUpVelocity: -520,      // Maximum upward speed (negative px/s)
@@ -36,7 +36,9 @@ const CONFIG = {
     maxRotation: 1.15,        // Max downward dive tilt (~ +66 deg)
     hitboxRadius: 32,         // Circular collision radius
     hitboxOffsetX: 8,         // Inset hitbox center X offset
-    hitboxOffsetY: 0          // Inset hitbox center Y offset
+    hitboxOffsetY: 0,         // Inset hitbox center Y offset
+    flapFps: 11,              // Animation rate during active ascent (~11 fps, within 8-12 fps)
+    glideFps: 9               // Animation rate during descent/glide (~9 fps, within 8-12 fps)
   },
 
   // Insect Settings
