@@ -93,6 +93,7 @@ const CONFIG = {
       'assets/insect_5.png'
     ],
     background: 'assets/background.png',
+    gameplayBg: 'assets/gameplay_bg.jpg',
     cloud: 'assets/cloud.png'
   }
 };
@@ -289,6 +290,7 @@ class AssetManager {
       this.loadImage('insect_4', CONFIG.assets.insects[3]),
       this.loadImage('insect_5', CONFIG.assets.insects[4]),
       this.loadImage('background', CONFIG.assets.background),
+      this.loadImage('gameplay_bg', CONFIG.assets.gameplayBg),
       this.loadImage('cloud', CONFIG.assets.cloud)
     ];
     await Promise.all(promises);
