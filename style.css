@@ -229,100 +229,120 @@ body::before {
 }
 
 /* ==========================================================================
-   Title / Opening Screen
+   Title / Opening Screen (Responsive Pure White #FFFFFF Background Layout)
    ========================================================================== */
 #title-screen {
-  background: #000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 100;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 
-.video-wrapper {
+#title-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#title-stage {
+  position: relative;
+  width: min(100vw, calc(100dvh * (1036 / 1600)));
+  height: min(100dvh, calc(100vw * (1600 / 1036)));
+  aspect-ratio: 1036 / 1600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  margin: auto;
+}
+
+#title-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
+#title-content-layer {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-#title-video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background-color: #050b14;
-}
-
-.skip-btn {
-  position: absolute;
-  top: calc(var(--safe-top) + 12px);
-  right: calc(var(--safe-right) + 12px);
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: background 0.2s, transform 0.15s;
-  z-index: 12;
-}
-
-.skip-btn:hover {
-  background: rgba(255, 153, 0, 0.8);
-  border-color: #ff9900;
-}
-
-.skip-btn:active {
-  transform: scale(0.95);
-}
-
-.title-ui {
-  position: absolute;
-  bottom: calc(var(--safe-bottom) + 36px);
-  left: 0;
-  width: 100%;
-  display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 24px;
-  z-index: 15;
+  pointer-events: none;
 }
 
-.title-logo-box {
-  text-align: center;
-  margin-bottom: 24px;
-  display: none; /* Only displayed as backup if video cannot render */
+/* Animated Bird Wrapper in the middle empty space */
+#title-bird-wrapper {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52%;
+  aspect-ratio: 1600 / 1132;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 
-.title-sub {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: var(--color-primary-light);
-  text-transform: uppercase;
+#title-bird-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-.title-main {
-  font-size: 36px;
+/* START Button Wrapper directly below the bird */
+#title-btn-wrapper {
+  position: absolute;
+  top: 57%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 58%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+#title-btn-wrapper .btn-start {
+  width: 100%;
+  max-width: 290px;
+  height: clamp(48px, 6.2vh, 60px);
+  font-size: clamp(19px, 2.5vh, 24px);
   font-weight: 900;
-  letter-spacing: 1px;
-  background: linear-gradient(180deg, #ffffff 0%, #ffcc00 60%, #ff6600 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8));
-  margin: 4px 0 6px 0;
+  letter-spacing: 2px;
+  color: #2b1100;
+  background: linear-gradient(180deg, #ffe066 0%, #ff9900 55%, #e66a00 100%);
+  border: 2.5px solid #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 10px 25px rgba(255, 140, 0, 0.5), inset 0 2px 3px rgba(255, 255, 255, 0.8), 0 4px 10px rgba(0, 0, 0, 0.15);
+  animation: pulse-glow 2s infinite ease-in-out;
+  cursor: pointer;
 }
 
-.title-hint {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: #bae6fd;
+#title-btn-wrapper .btn-start:hover {
+  transform: scale(1.03);
+  box-shadow: 0 14px 32px rgba(255, 140, 0, 0.65), inset 0 2px 4px rgba(255, 255, 255, 0.9);
+}
+
+#title-btn-wrapper .btn-start:active {
+  transform: scale(0.96);
 }
 
 /* Start Button */
