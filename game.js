@@ -25,8 +25,8 @@ const CONFIG = {
   bird: {
     startX: 180,              // Fixed horizontal position (near left-center)
     startY: 640,              // Initial vertical center
-    width: 135,               // Display width in virtual pixels (preserves 1600:1132 aspect ratio)
-    height: 95,               // Display height in virtual pixels
+    width: 180,               // Display width in virtual pixels (1.5:1 visual ratio with insects)
+    height: 127,              // Display height in virtual pixels (preserves 1600:1132 aspect ratio)
     flapAcceleration: 2400,   // Upward acceleration while ascending (px/s^2)
     gravity: 1500,            // Downward acceleration under gravity (px/s^2)
     maxUpVelocity: -520,      // Maximum upward speed (negative px/s)
@@ -34,18 +34,26 @@ const CONFIG = {
     rotationSpeed: 10,        // Speed of rotation interpolation (lerp factor)
     minRotation: -0.42,       // Max upward tilt (~ -24 deg)
     maxRotation: 1.15,        // Max downward dive tilt (~ +66 deg)
-    hitboxRadius: 32,         // Circular collision radius
-    hitboxOffsetX: 8,         // Inset hitbox center X offset
+    hitboxRadius: 40,         // Scaled circular collision radius
+    hitboxOffsetX: 10,        // Inset hitbox center X offset toward beak
     hitboxOffsetY: 0,         // Inset hitbox center Y offset
     flapFps: 11,              // Animation rate during active ascent (~11 fps, within 8-12 fps)
     glideFps: 9               // Animation rate during descent/glide (~9 fps, within 8-12 fps)
   },
 
+  // Insect Varieties (4 types with equal spawn probability)
+  insectVarieties: [
+    { id: 1, name: 'Bee', assetKey: 'insect_1', width: 78, height: 60, hitboxRadius: 24 },
+    { id: 2, name: 'Dragonfly', assetKey: 'insect_2', width: 58, height: 80, hitboxRadius: 25 },
+    { id: 3, name: 'RedBeetle', assetKey: 'insect_3', width: 66, height: 64, hitboxRadius: 24 },
+    { id: 4, name: 'DarkBeetle', assetKey: 'insect_4', width: 66, height: 64, hitboxRadius: 24 }
+  ],
+
   // Insect Settings
   insects: {
-    width: 75,                // Insect visual width
-    height: 55,               // Insect visual height
-    hitboxRadius: 22,         // Collision radius
+    width: 70,                // Default insect visual width
+    height: 64,               // Default insect visual height
+    hitboxRadius: 24,         // Default collision radius
     minY: 100,                // Minimum spawn vertical coordinate
     maxY: 1180,               // Maximum spawn vertical coordinate
     minSpeed: 190,            // Minimum horizontal speed (px/s)
@@ -75,7 +83,12 @@ const CONFIG = {
       'assets/bird_fly_2.png',
       'assets/bird_fly_3.png'
     ],
-    insect: 'assets/insect.png',
+    insects: [
+      'assets/insect_1.png',
+      'assets/insect_2.png',
+      'assets/insect_3.png',
+      'assets/insect_4.png'
+    ],
     background: 'assets/background.png',
     cloud: 'assets/cloud.png'
   }
@@ -266,7 +279,10 @@ class AssetManager {
       this.loadImage('bird_fly_2', CONFIG.assets.birdFrames[1]),
       this.loadImage('bird_fly_3', CONFIG.assets.birdFrames[2]),
       this.loadImage('bird', CONFIG.assets.bird),
-      this.loadImage('insect', CONFIG.assets.insect),
+      this.loadImage('insect_1', CONFIG.assets.insects[0]),
+      this.loadImage('insect_2', CONFIG.assets.insects[1]),
+      this.loadImage('insect_3', CONFIG.assets.insects[2]),
+      this.loadImage('insect_4', CONFIG.assets.insects[3]),
       this.loadImage('background', CONFIG.assets.background),
       this.loadImage('cloud', CONFIG.assets.cloud)
     ];
