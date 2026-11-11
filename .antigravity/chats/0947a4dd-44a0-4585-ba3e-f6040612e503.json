@@ -232,6 +232,30 @@
       "created_at": "2026-11-11T19:17:35.382Z",
       "sender": "ios",
       "is_cancelled": false
+    },
+    {
+      "id": "541ab605-0e4b-4899-9a27-066b5c489aac",
+      "role": "agent",
+      "content": "[TIMEOUT] The request took too long in Antigravity CLI.\nPlease try a shorter prompt or split the request into smaller steps.",
+      "status": "error",
+      "model": "claude-sonnet-4-6",
+      "client_type": "gemini-bridge",
+      "parent_message_id": "bdcf235a-bd14-4fb6-a43a-2ba195fd2180",
+      "created_at": "2026-11-11T19:18:03.762Z",
+      "sender": "macOS",
+      "is_cancelled": false
+    },
+    {
+      "id": "9f2fdc2a-6391-49b4-81db-e7e0dfda26cb",
+      "role": "user",
+      "content": "I attached an image: .antigravity/uploads/photo-1794424970-1.jpg.\n\nPlease replace the background image of the gameplay screen with the newly provided image.\n\nRequirements:\n\n* Use the new image as the background during gameplay only.\n* Do not change the title screen background.\n* Preserve the original aspect ratio of the image.\n* Never crop, stretch, or distort the image.\n* Make sure the entire image is visible on the screen.\n* If the image does not fill the screen, fill the remaining space with white.\n* Keep the background behind all gameplay elements, including the bird, insects, score, and UI.\n* Do not modify the bird animations, insect behavior, collision detection, scoring system, game logic, or game-over/clear screens.\n* Do not rebuild the game or modify unrelated files.\n\nPlease inspect the existing project and implement only this background replacement.",
+      "status": "pending",
+      "model": "claude-sonnet-4-6",
+      "client_type": "gemini-bridge",
+      "parent_message_id": null,
+      "created_at": "2026-11-11T19:22:53.029Z",
+      "sender": "ios",
+      "is_cancelled": false
     }
   ]
 }
