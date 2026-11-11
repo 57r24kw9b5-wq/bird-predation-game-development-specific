@@ -545,48 +545,36 @@ class BirdPredationGame {
   }
 
   // ==========================================================================
-  // TITLE VIDEO & OPENING SCREEN
+  // TITLE SCREEN SETUP & BIRD ANIMATION
   // ==========================================================================
-  initTitleVideo() {
-    const video = this.titleVideo;
-    let buttonRevealed = false;
+  initTitleScreen() {
+    this.resizeTitleBirdCanvas();
+  }
 
-    const revealStartButton = () => {
-      if (buttonRevealed) return;
-      buttonRevealed = true;
-      this.startBtn.classList.remove('hidden');
-      if (this.skipBtn) {
-        this.skipBtn.style.display = 'none';
-      }
-    };
+  resizeTitleBirdCanvas() {
+    const wrapper = document.getElementById('title-bird-wrapper');
+    const canvas = this.titleBirdCanvas;
+    if (!wrapper || !canvas) return;
+    const rect = wrapper.getBoundingClientRect();
+    canvas.width = Math.round(rect.width * Math.min(window.devicePixelRatio || 1, 2));
+    canvas.height = Math.round(rect.height * Math.min(window.devicePixelRatio || 1, 2));
+  }
 
-    // Video end event
-    video.addEventListener('ended', revealStartButton);
-
-    // Error or stall fallbacks (spec requires START button if video fails)
-    video.addEventListener('error', revealStartButton);
-    video.addEventListener('stalled', revealStartButton);
-
-    // Skip button
-    this.skipBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      try { video.pause(); } catch (err) {}
-      revealStartButton();
-    });
-
-    // Start video playback muted & playsinline
-    video.muted = true;
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch((err) => {
-        console.warn('Video autoplay inhibited or failed:', err);
-        // Fallback: show START button immediately so player is never blocked
-        revealStartButton();
-      });
+  drawTitleBird() {
+    const canvas = this.titleBirdCanvas;
+    const ctx = this.titleBirdCtx;
+    if (!canvas || !ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const img = this.assets.getBirdFrame(this.titleFrameIndex);
+    if (img) {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    } else {
+      // Procedural fallback if image not yet loaded
+      ctx.fillStyle = '#c97a32';
+      ctx.beginPath();
+      ctx.ellipse(canvas.width / 2, canvas.height / 2, canvas.width * 0.3, canvas.height * 0.2, 0, 0, Math.PI * 2);
+      ctx.fill();
     }
-
-    // Backup safety timeout: in case video triggers no events within 4.5s
-    setTimeout(revealStartButton, 4500);
   }
 
   // ==========================================================================
@@ -655,7 +643,7 @@ class BirdPredationGame {
       });
     };
 
-    [this.startBtn, this.skipBtn, this.retryBtnOver, this.retryBtnClear, this.soundBtn].forEach(stopPropagationAll);
+    [this.startBtn, this.retryBtnOver, this.retryBtnClear, this.soundBtn].forEach(stopPropagationAll);
 
     this.startBtn.addEventListener('click', (e) => {
       this.startGame();
@@ -715,6 +703,7 @@ class BirdPredationGame {
       0,
       0
     );
+    this.resizeTitleBirdCanvas();
   }
 
   // ==========================================================================
@@ -726,9 +715,10 @@ class BirdPredationGame {
 
     // Hide opening screen
     this.titleScreen.classList.add('hidden');
-    try {
-      this.titleVideo.pause();
-    } catch (e) {}
+    // Clear title bird canvas
+    if (this.titleBirdCtx && this.titleBirdCanvas) {
+      this.titleBirdCtx.clearRect(0, 0, this.titleBirdCanvas.width, this.titleBirdCanvas.height);
+    }
 
     // Show HUD
     this.hud.classList.remove('hidden');
@@ -774,6 +764,9 @@ class BirdPredationGame {
     // 4. Reset Particle effects & inputs
     this.particles.reset();
     this.isAscending = false;
+    // 5. Reset title bird animation state
+    this.titleAnimTimer = 0;
+    this.titleFrameIndex = 1;
   }
 
   updateScoreDisplay() {
@@ -1011,6 +1004,12 @@ class BirdPredationGame {
       }
     } else {
       // Passive animations when not actively playing (clouds & ambient particles continue)
+      if (this.state === GameState.TITLE) {
+        this.titleAnimTimer += dt * 10; // ~10 fps flap
+        const flapSequence = [0, 1, 2, 1];
+        this.titleFrameIndex = flapSequence[Math.floor(this.titleAnimTimer) % 4];
+        this.drawTitleBird();
+      }
       this.updateClouds(dt);
       this.particles.update(dt);
     }
