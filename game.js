@@ -451,9 +451,11 @@ class BirdPredationGame {
     this.soundBtn = document.getElementById('sound-btn');
     this.soundIcon = document.getElementById('sound-icon');
     this.titleScreen = document.getElementById('title-screen');
-    this.titleVideo = document.getElementById('title-video');
+    this.titleBirdCanvas = document.getElementById('title-bird-canvas');
+    this.titleBirdCtx = this.titleBirdCanvas ? this.titleBirdCanvas.getContext('2d') : null;
+    this.titleAnimTimer = 0;
+    this.titleFrameIndex = 1;
     this.startBtn = document.getElementById('start-btn');
-    this.skipBtn = document.getElementById('skip-btn');
     this.gameOverScreen = document.getElementById('game-over-screen');
     this.gameClearScreen = document.getElementById('game-clear-screen');
     this.retryBtnOver = document.getElementById('retry-btn-over');
@@ -505,7 +507,7 @@ class BirdPredationGame {
     // Initialize systems
     this.bindEvents();
     this.handleResize();
-    this.initTitleVideo();
+    this.initTitleScreen();
     this.assets.loadAll();
 
     // Start Animation Loop
