@@ -866,14 +866,21 @@ class BirdPredationGame {
       if (this.bird.vy < birdConf.maxUpVelocity) {
         this.bird.vy = birdConf.maxUpVelocity;
       }
-      this.bird.wingTimer += dt * 18;
     } else {
       this.bird.vy += birdConf.gravity * dt;
       if (this.bird.vy > birdConf.maxDownVelocity) {
         this.bird.vy = birdConf.maxDownVelocity;
       }
-      this.bird.wingTimer += dt * 6;
     }
+
+    // Wing-flapping animation cycling at approx 8–12 fps
+    // Ascent -> energetic flapping at ~11 fps; Descent -> gentle gliding flap at ~9 fps
+    const currentFps = this.isAscending ? birdConf.flapFps : birdConf.glideFps;
+    this.bird.animTimer += dt * currentFps;
+    // 4-step seamless flap loop: Up (0) -> Mid (1) -> Down (2) -> Mid (1)
+    const flapSequence = [0, 1, 2, 1];
+    const seqStep = Math.floor(this.bird.animTimer) % flapSequence.length;
+    this.bird.frameIndex = flapSequence[seqStep];
 
     // Apply vertical displacement
     this.bird.y += this.bird.vy * dt;
@@ -1114,18 +1121,24 @@ class BirdPredationGame {
     }
   }
 
-  // Bird Rendering (Image or Procedural Fallback)
+  // Bird Rendering (Animated Frames, Static Image, or Procedural Fallback)
   drawBird(ctx) {
     ctx.save();
     ctx.translate(this.bird.x, this.bird.y);
     ctx.rotate(this.bird.rotation);
 
-    if (this.assets.isAvailable('bird')) {
+    if (this.assets.hasBirdFrames()) {
+      // 3-Frame wing flapping animation
+      const birdImg = this.assets.getBirdFrame(this.bird.frameIndex);
+      ctx.drawImage(
+        birdImg,
+        -this.bird.width / 2,
+        -this.bird.height / 2,
+        this.bird.width,
+        this.bird.height
+      );
+    } else if (this.assets.isAvailable('bird')) {
       const birdImg = this.assets.getImage('bird');
-      // Subtle wing flapping oscillation
-      const flapScaleY = this.isAscending ? (1 + Math.sin(this.bird.wingTimer) * 0.15) : 1;
-      ctx.scale(1, flapScaleY);
-
       ctx.drawImage(
         birdImg,
         -this.bird.width / 2,
