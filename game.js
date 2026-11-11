@@ -78,6 +78,7 @@ const CONFIG = {
   // Assets Paths
   assets: {
     video: 'assets/title.mp4',
+    titleBg: 'assets/title_bg.jpg',
     bird: 'assets/bird.png',
     birdFrames: [
       'assets/bird_fly_1.png',
@@ -277,6 +278,7 @@ class AssetManager {
 
   async loadAll() {
     const promises = [
+      this.loadImage('title_bg', CONFIG.assets.titleBg),
       this.loadImage('bird_fly_1', CONFIG.assets.birdFrames[0]),
       this.loadImage('bird_fly_2', CONFIG.assets.birdFrames[1]),
       this.loadImage('bird_fly_3', CONFIG.assets.birdFrames[2]),
